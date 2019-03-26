@@ -1,0 +1,39 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+    </head>
+    <body>
+        <h1>Gute Tag Welt!</h1>
+        <p>Ich sage etwas hier.</p>
+        <p>Das Wetter heute ist doch schoen.</p>
+        <p>Morgen wird es auch schoen sein, glaube ich.</p>
+        <section>
+            Section Eins
+        </section>
+        <section>
+            Section Zwei 
+        </section>
+        <section>
+            Section Drei
+        </section>
+        
+    </body>
+    <script>
+        // Play around with style changes on simple selections
+        d3.selectAll("p")
+            .data([12, 18, 24])
+            .style("color", function(d, i) {
+                return i % 2 ? "orange" :  "cyan";
+            })
+            .style("font-size", function(d) {
+                return d + "px";
+        });
+        d3.select("body").style("background-color", "#eee");
+
+        // Play around with appending elements to selections
+        let section = d3.selectAll("section");
+        let div = section.append("div");
+        div.html("Guten Tag Welt (noch wieder)");
+    </script>
+</html>
