@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+	.chart rect {
+	  fill: steelblue;
+	}
+
+	.chart text {
+	  fill: white;
+	  font: 10px sans-serif;
+	  text-anchor: end;
+	}
+  </style>
+  <head>
+    <meta charset="utf-8"/>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+  </head>
+  <body>
+    <!--svg class="chart oldchart" width="420" height="120">
+      <g transform="translate(0,0)">
+        <rect width="40" height="19"></rect>
+        <text x="37" y="9.5" dy=".35em">4</text>
+      </g>
+      <g transform="translate(0,20)">
+        <rect width="80" height="19"></rect>
+        <text x="77" y="9.5" dy=".35em">8</text>
+      </g>
+      <g transform="translate(0,40)">
+        <rect width="150" height="19"></rect>
+        <text x="147" y="9.5" dy=".35em">15</text>
+      </g>
+      <g transform="translate(0,60)">
+        <rect width="160" height="19"></rect>
+        <text x="157" y="9.5" dy=".35em">16</text>
+      </g>
+      <g transform="translate(0,80)">
+        <rect width="230" height="19"></rect>
+        <text x="227" y="9.5" dy=".35em">23</text>
+      </g>
+      <g transform="translate(0,100)">
+        <rect width="420" height="19"></rect>
+        <text x="417" y="9.5" dy=".35em">42</text>
+      </g>
+    </svg-->
+    <svg class="chart d3svgchart">
+    </svg>
+  </body>
+  <script>
+    (async function() {
+    const width = 420;
+    const barHeight = 20;
+    const yOffset = 0;
+    const scale = d3.scaleLinear()
+      .range([0, width]);
+
+    let chart = d3.select(".d3svgchart")
+      .attr("width", width);
+
+    let allData = [];
+
+    await d3.csv("data.csv").then(function(data) {
+      scale.domain([0, d3.max(data, function(d) { return parseInt(d.value); })]);
+
+      chart.attr("height", (barHeight * data.length));
+
+      let bar = chart.selectAll("g")
+        .data(data)
+        .enter().append("g")
+          .attr("transform", function(d, i) {
+          return "translate(0," + (yOffset + (i * barHeight)) + ")"; 
+          });   
+ 
+      bar.append("rect")
+        .attr("width", function(d) { return scale(d.value); })
+        .attr("height", barHeight - 1);
+
+      bar.append("text")
+        .attr("x", function(d) { return scale(d.value) - 3; })
+        .attr("y", barHeight / 2)
+        .attr("dy", ".35em")
+        .text(function(d) { return d.value; });
+    })
+    .catch(function(error) { console.error(error); }
+    );
+    })();
+  </script>
+</html>
